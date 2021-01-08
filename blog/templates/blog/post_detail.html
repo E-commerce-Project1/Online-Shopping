@@ -1,43 +1,54 @@
-{% extends "blog/base.html" %}
+{% extends "blog/base2.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
-    <article class="media content-section">
-      <div class="media-body">
-        <div class="article-metadata">
-          {% if post.header_image %}
-          <img src="{{ post.header_image.url }}" width = "400" height = "400">
-        {% endif %}
-        </div>
-        <div class="article-metadata">
-          <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
-          <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
-        </div>
-          <h2 class="article-title">{{ object.title }}</h2>
-          <p class="article-content">{{ object.content }}</p>
-          <p class="article-content">{{ object.price }}</p>
-          {%if object.author == user%}
-          <a href="{% url 'post-update' object.id %}" class="btn btn-outline-info">Update</a>
-          <a href="{% url 'post-delete' object.id %}" class="btn btn-outline-danger">Delete</a>
-          {% else %}
-          <a href="#" class="btn btn-outline-info">Add to cart</a>
-          {%endif%}
-      </div>
-      <div class="col-md-4">
-          <div class="content-section">
-            <h1>Also Check</h1>
-              <ul class="list-group" >
-                <li class="list-group-item list-group-item-light mt-2">Best Seller</li>
-                <li class="list-group-item list-group-item-light mt-2">Sale</li>
-                <li class="list-group-item list-group-item-light mt-2">Black Friday offers</li>
-                <li class="list-group-item list-group-item-light mt-2">Winter Collection</li>
-                <li class="list-group-item list-group-item-light mt-2">New Collection</li>
-                <li class="list-group-item list-group-item-light mt-2">Women</li>
-                <li class="list-group-item list-group-item-light mt-2">Men</li>
-                <li class="list-group-item list-group-item-light mt-2">Kids</li>
-                <li class="list-group-item list-group-item-light mt-2">Home</li>
-                <li class="list-group-item list-group-item-light mt-3">Electronics</li>
-              </ul>
-            </p>
+
+    <!------------------Product Page--------------------->
+
+
+
+                      {% if post.header_image %}
+                          <img src="{{ post.header_image.url }}"  alt = "first slider">
+                      </div>
+                      <div class="carousel-item ">
+                          <img src="{{ post.header_image.url }}"  alt = "second slider">
+                      </div>
+                      {% endif %}
+                  </div>
+              </div>
           </div>
-        </div>
-    </article>
+          <div class = "col-md-6">
+              <!-- Product Description -->
+              <div class="product-description mt-5">
+                <a class="mr-2" href="{% url 'user-posts' post.author.username %}"><h4>{{ post.author }}</h4></a>
+                <br>
+                <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+                <br>
+                  <h2 class="article-title">{{ post.title }}</h2>
+                  <br>
+                  <p class="article-content">{{ post.content }}</p>
+                  <br>
+                  {%if post.author == user%}
+                  <a href="{% url 'post-update' post.id %}" class="btn btn-outline-info">Update</a>
+                  <a href="{% url 'post-delete' post.id %}" class="btn btn-outline-danger">Delete</a>
+                 {% else %}
+                  <a href="#" class="btn btn-outline-info">Add to cart</a>
+                  {% endif %}
+              </div>
+
+              <br>
+              <!-- Product Pricing -->
+
+
+
+
+ </div>
+ <!----------------- End of Product info ----------->
+ <!----------------- Product Reviews --------------->
+
+
+
+
+
+    <!-----------------End of product page--------------->
 {% endblock content %}
