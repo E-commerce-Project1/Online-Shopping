@@ -16,6 +16,51 @@ def store (request):
     products = paginator.get_page(page_number)
     context ={'products':products}
     return render (request,'store/store.html',context)
+
+def cart(request):
+    if request.user.is_authenticated:
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer=customer,complete = False)
+        items = order.orderitem_set.all()
+        postorder, created = PostOrder.objects.get_or_create(customer=customer,complete = False)
+        postitems = postorder.postorderitem_set.all()
+        totalitems = postorder.get_cart_items + order.get_cart_items
+        total = postorder.get_cart_total + order.get_cart_total
+    else:
+        items = []
+        postitems = []
+        totalitems = 0
+        total = 0
+    context ={'items': items ,'postitems':postitems, 'total':total , 'totalitems':totalitems}
+    return render (request,'store/cart.html',context)
+
+
+def updateitem(request):
+
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+
+    print('Action:',action)
+    print('productId:', productId)
+
+    customer = request.user
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(customer=customer,complete = False)
+    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+
+    orderItem.save()
+
+    if orderItem.quantity <=  0:
+        orderItem.delete()
+
+    return JsonResponse ('Item was added', safe=False)
+
     
 
 def product(request,id):

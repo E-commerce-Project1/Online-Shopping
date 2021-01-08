@@ -8,7 +8,11 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from .models import Post
+from .models import *
+from .models import Post,PostReview
+from blog.forms import PostReviewForm
+from django.http import JsonResponse
+import json
 
 
 def home(request):
@@ -87,3 +91,32 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html',{'title':'About'})
+
+
+
+def updatepostitem(request):
+
+    data = json.loads(request.body)
+    postId = data['postId']
+    action = data['action']
+
+    print('Action:',action)
+    print('productId:', postId)
+
+    customer = request.user
+    post = Post.objects.get(id=postId)
+    postorder, created = PostOrder.objects.get_or_create(customer=customer,complete = False)
+    postorderItem, created = PostOrderItem.objects.get_or_create(postorder=postorder, post=post)
+
+    if action == 'add':
+        postorderItem.quantity = (postorderItem.quantity + 1)
+    elif action == 'remove':
+        postorderItem.quantity = (postorderItem.quantity - 1)
+
+    postorderItem.save()
+
+    if postorderItem.quantity <=  0:
+        postorderItem.delete()
+
+    return JsonResponse ('Item was added', safe=False)
+

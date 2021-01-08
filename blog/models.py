@@ -24,3 +24,35 @@ class Post(models.Model):
 
 	def __str__(self):
 		return self.title
+
+
+
+class PostOrder(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank = True, null = True)
+    complete = models.BooleanField(default = False, null = True, blank = False)
+    transaction_id = models.CharField(max_length=200,null=True)
+
+    def _str_(self):
+        return str(self.id)
+
+    @property
+    def get_cart_total(self):
+        postorderitems = self.postorderitem_set.all()
+        total = sum([int(item.get_total) for item in postorderitems])
+        return total
+
+    @property
+    def get_cart_items(self):
+        postorderitems = self.postorderitem_set.all()
+        total = sum([int(item.quantity) for item in postorderitems])
+        return total
+
+class PostOrderItem(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.SET_NULL, blank = True, null = True)
+    postorder = models.ForeignKey(PostOrder, on_delete = models.SET_NULL, blank = True, null = True)
+    quantity = models.IntegerField(default=0, blank = True, null = True)
+
+    @property
+    def get_total(self):
+        total = int(self.post.price) * self.quantity
+        return total
