@@ -1,0 +1,58 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+    <!------------------Product Page--------------------->
+
+ 
+                          <img class="d-block w-100" src="{{product.image.url}}"  alt = "first slider" style="object-fit: cover;">
+                      
+                          <img class="d-block w-100" src="{{product.image.url}}"  alt = "second slider" style="object-fit: cover;">
+                     
+                  <h1>{{ product.name }}</h1>
+                  <br><br>
+                  <h5>{{ product.brand }}</h5>
+             
+                  <div><h5>{{product.price}} EGP</h5></div>
+                  <br>
+                  <div> Stars: {% if product.get_rating == 0 %}No ratings yet{% else %}{{ product.get_rating|floatformat:1 }}{% endif %}</div>
+                  <br>
+             
+                  
+ <!----------------- End of Product info ----------->
+ <!----------------- Product Reviews --------------->
+ 
+
+
+    <h2 class="subtitle">Reviews</h2>
+     {% if not product.reviews.all %}
+         <div>
+            <strong>No reviews yet...</strong>
+         </div>
+      {% else %}
+      {% for review in product.reviews.all %}
+
+                <small><div class="border-bottom text-muted ml-4">{{ review.date_added|date:"Y-m-d" }}  ,  {{ review.stars }} Stars
+
+                 <strong style="margin-right: 15px">{{request.user.username}}:</strong>{{ review.content }}
+            
+     {% endfor %}
+     {% endif %}
+
+
+        <h2 >Post Your Review</h2>
+        <br>
+   
+                <label for="exampleFormControlTextarea1"><strong>Review:</strong></label>
+ 
+ 
+            {% for related_product in related_products %}
+                <
+                        <img src="{{ related_product.image.url }}" class="img-fluid mb-3 ml-6"/>
+                        <h5>{{related_product.name}}</h5>
+                        <p><small>{{ related_product.price }} </small> </p>
+                        <a class = "btn btn-outline-success" href="{% url 'product' related_product.id %}" >View</a>
+                  
+                {% endfor %}
+
+    <!-----------------End of product page--------------->
+{% endblock content %}
