@@ -33,6 +33,15 @@
                   <a href="{% url 'post-delete' post.id %}" class="btn btn-outline-danger">Delete</a>
                  {% else %}
                   <a href="#" class="btn btn-outline-info">Add to cart</a>
+                  {% if user.is_authenticated %}
+                  {% if post.favourites.exists %}
+                   <a href="{% url 'favourite_add' post.id %}">
+                    <img  style = "width:25px ; height:25px" src = "{%static '/images/heart.png' %}"></a>
+                  {% else %}
+                    <a href="{% url 'favourite_add' post.id %}" >
+                      <img  style = "width:25px ; height:25px" src = "{%static '/blog/favicon.png' %}"></a>
+                  {% endif %}  
+                  {% endif %}  
                   {% endif %}
               </div>
 

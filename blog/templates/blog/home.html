@@ -16,7 +16,15 @@
       <a href="#" class="card-text">{{ post.category }}</a>
       <p class="card-text">{{ post.price }} EPG</p>
       <button data-product = {{post.id}} data-action = "add" data-type = "post" class="btn btn-outline-info update-cart">Add to cart</button>
-
+        {% if user.is_authenticated %}
+          {% if post.favourites.exists %}
+            <a href="{% url 'favourite_add' post.id %}">
+            <img  style = "width:25px ; height:25px" src = "{%static '/images/heart.png' %}"></a>
+          {% else %}
+            <a href="{% url 'favourite_add' post.id %}" >
+            <img  style = "width:25px ; height:25px" src = "{%static '/blog/favicon.png' %}"></a>
+          {% endif %}  
+        {% endif %} 
 
 
     </div>

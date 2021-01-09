@@ -26,6 +26,7 @@ class Product(models.Model):
     type = models.CharField(choices=TYPE_CHOICES, max_length=200, blank=True, null=True)
     description=models.TextField()
     date = models.DateTimeField(default=timezone.now)
+    favourites=models.ManyToManyField(User,related_name='fav',default='none',blank=True)
     brand=models.CharField(max_length=200 , null=True)
     def __str__(self):
        return self.name
