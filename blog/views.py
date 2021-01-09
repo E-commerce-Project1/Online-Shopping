@@ -12,6 +12,7 @@ from .models import *
 from .models import Post,PostReview
 from blog.forms import PostReviewForm
 from django.http import JsonResponse
+from django.db.models import Q
 import json
 
 
@@ -59,7 +60,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self,form):
         form.instance.author=self.request.user
         return super().form_valid(form)
-        
+
 
 class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model=Post
@@ -86,7 +87,7 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         else:
             return False
 
-        
+
 
 
 def about(request):
@@ -120,3 +121,12 @@ def updatepostitem(request):
 
     return JsonResponse ('Item was added', safe=False)
 
+
+def search(request):
+    kw = request.GET.get('keyword')
+    posts = Post.objects.filter(Q(title__icontains=kw) | Q(content__icontains=kw))
+    context = {
+        'posts': posts
+    }
+    print(posts)
+    return render (request,'blog/search2.html', context)

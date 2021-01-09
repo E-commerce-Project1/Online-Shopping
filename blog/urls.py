@@ -25,6 +25,6 @@ urlpatterns = [
     path('password-change/done/',auth_views.PasswordChangeDoneView.as_view(template_name='users/password_change_done.html'),name="password_change_done"),
     path('profile/favorites/',user_views.favourite_list,name='favourite_list'),
     path('fav/<int:pk>/',user_views.favourite_add,name='favourite_add'),
+	path('search2/', views.search, name="search2"),
     path('about/',views.about,name='blog-about')
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
-

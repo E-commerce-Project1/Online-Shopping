@@ -61,15 +61,24 @@ def updateitem(request):
 
     return JsonResponse ('Item was added', safe=False)
 
+
+def search(request):
+    kw = request.GET.get('keyword')
+    products = Product.objects.filter(Q(name__icontains=kw) | Q(description__icontains=kw))
+    context = {
+        'products': products
+    }
+    print(products)
+    return render (request,'store/search.html', context)
     
 
 def product(request,id):
 
     product = Product.objects.get(pk=id)
-   
+
     # Add review
     related_products = list(Product.objects.filter(category=product.category).exclude(id=product.id))
-    
+
     if len(related_products) >= 3:
         related_products = random.sample(related_products, 3)
 
@@ -86,7 +95,7 @@ def product(request,id):
 def productreview(request,id):
         product = Product.objects.get(pk=id)
         related_products = list(Product.objects.filter(category=product.category).exclude(id=product.id))
-    
+
         if len(related_products) >= 3:
             related_products = random.sample(related_products, 3)
 
@@ -109,4 +118,3 @@ def Category (request):
     context= {'product':product,
               'category_products':category_products}
     return render (request,'store/store.html',context)
-
