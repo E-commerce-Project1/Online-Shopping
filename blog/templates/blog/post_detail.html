@@ -2,7 +2,18 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+    .container
+    {
+  width:80%;
+  margin-top:40px;
+  margin-bottom:40px;
+  overflow:hidden;
+    }
 
+
+
+</style>
     <!------------------Product Page--------------------->
 
 
@@ -54,10 +65,69 @@
  </div>
  <!----------------- End of Product info ----------->
  <!----------------- Product Reviews --------------->
+<div class="container">
+    <h2 class="subtitle">Reviews </h2>
+
+         <div>
+            <strong>No reviews yet...</strong>
+         </div>
 
 
+         <div class="row ">
+                <small><div class="border-bottom text-muted ml-4">
+                </small></div>
+           </div>
+            <div class="card">
+              <div class="card-header">
+                 <strong style="margin-right: 15px"></strong>
+               </div>
 
+            </div>
 
+ </div>
+  <!------------------ Post your review -------------->
+ <div class = "container">
+    
+        <h2 >Post Your Review</h2>
+        <br>
+    <form class = "form" method="POST" action="/postreview/{{post.id}}/"  enctype="multipart/form-data" >
 
-    <!-----------------End of product page--------------->
+        <div class="form-group">
+          <label for="exampleInputEmail1"><strong>Email address</strong></label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class = "form-group" >
+                    <br>
+                    <div class = "row">
+                        <br>
+                    <div class = "col-md-6">
+                    <label>Stars</label>
+                    <br>
+                    <select name="stars">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5</option>
+                    </select>
+                    </div>
+                    </div>
+                </form>
+                <br>
+                <label for="exampleFormControlTextarea1"><strong>Review:</strong></label>
+
+                <textarea class="form-control" rows="3" placeholder="Enter your Review" name = "content"></textarea>
+                <br>
+                <div class="field">
+                  <div class="control">
+                    <button class="btn btn-info btn-block " type="submit">Submit</button>   
+                  </div>
+        </div>
+    
+      </form>
+    
+ </div>
+
+<!-----------------End of product page--------------->
 {% endblock content %}

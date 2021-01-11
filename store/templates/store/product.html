@@ -1,6 +1,19 @@
 {% extends 'store/base.html' %}
 {% load static %}
 {% block content %}
+
+<style>
+    .container
+    {
+  width:80%;
+  margin-top:40px;
+  margin-bottom:40px;
+  overflow:hidden;
+    }
+
+
+
+</style>
     <!------------------Product Page--------------------->
 
  
@@ -21,38 +34,91 @@
  <!----------------- End of Product info ----------->
  <!----------------- Product Reviews --------------->
  
-
-
+<div class="container">
     <h2 class="subtitle">Reviews</h2>
      {% if not product.reviews.all %}
-         <div>
-            <strong>No reviews yet...</strong>
-         </div>
+     <div>
+        <strong>No reviews yet...</strong>
+     </div>
       {% else %}
       {% for review in product.reviews.all %}
-
-                <small><div class="border-bottom text-muted ml-4">{{ review.date_added|date:"Y-m-d" }}  ,  {{ review.stars }} Stars
-
+      <div class="row">
+        <small><div class="border-bottom text-muted ml-4">{{ review.date_added|date:"Y-m-d" }}  ,  {{ review.stars }} Stars
                  <strong style="margin-right: 15px">{{request.user.username}}:</strong>{{ review.content }}
-            
+        </div></small>
+    </div>
+    <div class="card">
+      <div class="card-header">
+         <strong style="margin-right: 15px"></strong>
+       </div>
+
+    </div>
      {% endfor %}
      {% endif %}
-
+</div>
+<!------------------ Post your review -------------->
+  <div class = "container">
+    <br> <br>
 
         <h2 >Post Your Review</h2>
         <br>
-   
-                <label for="exampleFormControlTextarea1"><strong>Review:</strong></label>
- 
- 
-            {% for related_product in related_products %}
-                <
-                        <img src="{{ related_product.image.url }}" class="img-fluid mb-3 ml-6"/>
+        <form class = "box-element" method="post" action="/productreview/{{product.id}}/" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="exampleInputEmail1"><strong>Email address</strong></label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter your Email">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class = "form-group" >
+                        <br>
+                        <div class = "row">
+                            <br>
+                        <div class = "col-md-6">
+                        <label>Stars</label>
+                        <br>
+                        <select name="stars">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5</option>
+                        </select>
+                        </div>
+                        </div>
+                    </form>
+                    <br>
+                    <label for="exampleFormControlTextarea1"><strong>Review:</strong></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter your Review" name = "content"></textarea>
+                      <div class="field">
+                        <div class="control">
+                          <button class="btn btn-outline-info button is-success">Submit</button>
+                        </div>
+                      </div>
+            </div>
+          </form>
+
+          <h5>Sign in to Post Your Review <small><a href="{% url 'login' %}" class="sm">Sign In</a></small></h5>
+          
+       </div>
+       <br><br>
+              <h1 class="text-center">You might also like</h1>
+              <br><br>
+                <div class="container">
+                  <div class="row d-flex justify-content-center">  
+        {% for related_product in related_products %}
+        <div class="col-lg-3 ">
+            <div class="card mb-3 border-0" style="width: 10rem;">
+                        <img src="{{ related_product.image.url }}" class="img-fluid mb-3 ml-6" style=" width: 200px;
+                        height: 200px; object-fit: cover;" />
                         <h5>{{related_product.name}}</h5>
                         <p><small>{{ related_product.price }} </small> </p>
                         <a class = "btn btn-outline-success" href="{% url 'product' related_product.id %}" >View</a>
-                  
+                    </div>
+                </div> 
                 {% endfor %}
+
+            </div>
+        </div>
 
     <!-----------------End of product page--------------->
 {% endblock content %}
