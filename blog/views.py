@@ -130,3 +130,15 @@ def search(request):
     }
     print(posts)
     return render (request,'blog/search2.html', context)
+
+
+def postreview(request, id):
+    post = Post.objects.get(pk=id)
+    context = {'post': post}
+    stars = request.POST.get('stars', 3)
+    content = request.POST.get('content', '')
+    date_added = request.POST.get('date_added', '')
+    review = PostReview.objects.create(post=post, stars=stars, content=content, date_added=date_added,author=request.user)
+    return render(request, "blog/post_detail.html", context)
+    review.save()
+    return redirect('post_detail')

@@ -132,18 +132,21 @@ input.star:checked ~ .rev-box{
 
               <br>
               <!-- Product Pricing -->
-              <div class="product-price">
-                              <div><h5>{{ object.price }}
-                               EGP </h5></div>
-                              <div> Stars:
-                              </div>
-                              <br>
-                          </div>
+            <div class="product-price">
+                  <div><h5>{{ object.price }}
+                   EGP </h5></div>
+                  <div> Stars: 
+                    {% if product.get_rating == 0 %}
+                      No ratings yet
+                    {% else %}
+                      {{ product.get_rating|floatformat:1 }}
+                    {% endif %}</div>
+                  <br>
+              </div>
 
-                     </div>
-                 </div>
-             </div>
-
+         </div>
+     </div>
+ </div>
 
 
 
@@ -155,19 +158,22 @@ input.star:checked ~ .rev-box{
          <div>
             <strong>No reviews yet...</strong>
          </div>
-
+         {% else %}
+      {% for review in post.reviews.all %}
 
          <div class="row ">
                 <small><div class="border-bottom text-muted ml-4">
+                  {{review.date_added|date:"Y-m-d" }}  ,  {{ review.stars }} Stars
                 </small></div>
            </div>
             <div class="card">
               <div class="card-header">
-                 <strong style="margin-right: 15px"></strong>
+                 <strong style="margin-right: 15px">{{review.author}}:</strong>{{ review.content }}
                </div>
 
             </div>
-
+     {% endfor %}
+     {% endif %}
  </div>
   <!------------------ Post your review -------------->
  <div class = "container">

@@ -58,3 +58,14 @@ class PostOrderItem(models.Model):
     def get_total(self):
         total = int(self.post.price) * self.quantity
         return total
+
+
+class PostReview(models.Model):
+    post = models.ForeignKey(Post, related_name='reviews', on_delete=models.CASCADE)
+    author= models.ForeignKey(User,on_delete=models.CASCADE,default='')
+    content = models.TextField(blank=True, null=True)
+    stars = models.IntegerField()
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.post.title
