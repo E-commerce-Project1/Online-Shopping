@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import redirect,render,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.views.generic import (
@@ -10,7 +10,6 @@ from django.views.generic import (
 )
 from .models import *
 from .models import Post,PostReview
-from blog.forms import PostReviewForm
 from django.http import JsonResponse
 from django.db.models import Q
 import json
@@ -39,15 +38,6 @@ class UserPostListView(ListView):
         user=get_object_or_404(User,username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-date_posted')
 
-# class PostCategoryView(ListView):
-#    model=Post
-#    template_name='blog/category.html'
-#    context_object_name='posts'
-#    paginate_by=6
-
-#    def get_queryset(self):
-#        cat=get_object_or_404(User,category=self.kwargs.get('category'))
-#        return Post.objects.filter(category=cat).order_by('-date_posted')
 
 
 class PostDetailView(DetailView):
@@ -93,6 +83,16 @@ class PostDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
 def about(request):
     return render(request, 'blog/about.html',{'title':'About'})
 
+def confirmation(request):
+    return render(request, 'blog/confirmation.html',{'title':'Confirmation'})
+
+
+def main(request):
+    return render(request, 'blog/main.html',{'title':'MONTERNO'})
+
+
+def favorites(request):
+    return render(request, 'blog/favorites.html',{'title':'MONTERNO'})
 
 
 def updatepostitem(request):

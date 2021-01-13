@@ -92,11 +92,11 @@ input.star:checked ~ .rev-box{
                       </ol>
                       <div class="carousel-inner">
                           <div class="carousel-item active">
-                      {% if post.header_image %}
-                          <img src="{{ post.header_image.url }}"  alt = "first slider">
+                     {% if post.header_image %}
+                          <img class="d-block w-100" src="{{ post.header_image.url }}"  alt = "first slider">
                       </div>
                       <div class="carousel-item ">
-                          <img src="{{ post.header_image.url }}"  alt = "second slider">
+                          <img class="d-block w-100" src="{{ post.header_image.url }}"  alt = "second slider">
                       </div>
                       {% endif %}
                   </div>
@@ -154,7 +154,7 @@ input.star:checked ~ .rev-box{
  <!----------------- Product Reviews --------------->
 <div class="container">
     <h2 class="subtitle">Reviews </h2>
-
+         {% if not post.reviews.all %}
          <div>
             <strong>No reviews yet...</strong>
          </div>

@@ -92,6 +92,12 @@ def product(request,id):
     product.save()
 
 
+
+def checkout(request):
+    context ={}
+    return render (request,'store/checkout.html',context)
+    
+
 def productreview(request,id):
         product = Product.objects.get(pk=id)
         related_products = list(Product.objects.filter(category=product.category).exclude(id=product.id))
